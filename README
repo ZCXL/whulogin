@@ -1,0 +1,14 @@
+1.此模拟登陆类需要使用pytesser框架，请自行安装
+
+2.Mac上的pytesser安装教程请查看http://github.com/ZCXL/博文
+
+3.下载后使用python ./setup.py install安装
+
+4.使用方法如
+	import whulogin
+	
+	edu=whulogin.WHUEdu("学号", "密码")
+	edu.getGrade() #获取当前学生的课程分数
+	edu.getGPA() #获取当前学生的绩点
+
+5.类中获取到了登陆完成后的jsessionid,可根据此id实现其他功能
