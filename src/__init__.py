@@ -9,6 +9,7 @@ class WHUEdu:
     urlImg = 'http://210.42.121.241/servlet/GenImg'
     urlPage = 'http://210.42.121.241/stu/stu_index.jsp'
     urlGrade = 'http://210.42.121.241/servlet/Svlt_QueryStuScore'
+    urlGrabLesson = 'http://210.42.121.241/servlet/ProcessApply?applyType=%s&studentNum=%s'
     imgPath = os.environ['HOME'] + '/code.jpeg'
     count = 20
     isLogin = False
@@ -169,8 +170,30 @@ class WHUEdu:
             print learnType.decode('gbk').encode('utf8'), score
         
         print u'合计', sum(scores)
+    
+    #选课函数，默认applType为公共选修，课程为课程id数组
+    def grabLessons(self, applyType= 'pub', lessons = []):
+        #构造cookie
+        cookies = {
+            'sto-id-20480': self.sto_id_20480,
+            'JSESSIONID': self.jsessionid
+        }
+
+        #获取token
+        csrftoken = self.__getToke()
+        
+        #构造post请求data
+        data = {
+            'apply': lessons,
+            'csrftoken': csrftoken
+        }
+
+        r = self.requests.post(self.urlGrabLesson % (applyType, self.uid), data = data, cookies = cookies, allow_redirects =False)
+        if str(r.status_code) == '200':
+            print '提交选课信息成功'
 
 if __name__ == '__main__':
-    edu = WHUEdu('2013302580121', '*')
+    edu = WHUEdu('2013302580121', 'forever1995815')
     edu.getGrade()
     edu.getGPA()
+    edu.grabLessons(lessons = ['20161002202'])
